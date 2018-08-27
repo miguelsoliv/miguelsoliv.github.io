@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
     $(window).on('resize', function () {
 
         $('header').css({'height': $(window).height()});
-        $('body').css({'width': $(window).width()})
+        $('body').css({'width': $(window).width()});
     });
 
     /*----------------------------------------------------*/
@@ -122,45 +122,146 @@ jQuery(document).ready(function ($) {
         smoothHeight: true,
         slideshowSpeed: 7000,
         animationSpeed: 600,
-        randomize: false,
+        randomize: false
     });
+});
 
     /*----------------------------------------------------*/
     /*	contact form
      ------------------------------------------------------*/
+(function () {
+    function validEmail(email) {
+        var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return regex.test(email);
+    }
 
-    $('form#contactForm button.submit').click(function () {
-        $('#image-loader').fadeIn();
+    // get all data in form and return object
+    function getFormData(form) {
+        var elements = form.elements;
 
-        var contactName = $('#contactForm #contactName').val();
-        var contactEmail = $('#contactForm #contactEmail').val();
-        var contactSubject = $('#contactForm #contactSubject').val();
-        var contactMessage = $('#contactForm #contactMessage').val();
+        var fields = Object.keys(elements).filter(function (k) {
+            return (elements[k].name !== "honeypot");
+        }).map(function (k) {
+            if (elements[k].name !== undefined) {
+                return elements[k].name;
+                // special case for Edge's html collection
+            } else if (elements[k].length > 0) {
+                return elements[k].item(0).name;
+            }
+        }).filter(function (item, pos, self) {
+            return self.indexOf(item) == pos && item;
+        });
 
-        var data = 'contactName=' + contactName + '&contactEmail=' + contactEmail +
-                '&contactSubject=' + contactSubject + '&contactMessage=' + contactMessage;
+        var formData = {};
+        fields.forEach(function (name) {
+            var element = elements[name];
 
-        $.ajax({
-            type: "POST",
-            url: "inc/sendEmail.php",
-            data: data,
-            success: function (msg) {
+            // singular form elements just have one value
+            formData[name] = element.value;
 
-                // Message was sent
-                if (msg == 'OK') {
-                    $('#image-loader').fadeOut();
-                    $('#message-warning').hide();
-                    $('#contactForm').fadeOut();
-                    $('#message-success').fadeIn();
+            // when our element has multiple items, get their values
+            if (element.length) {
+                var data = [];
+                for (var i = 0; i < element.length; i++) {
+                    var item = element.item(i);
+                    if (item.checked || item.selected) {
+                        data.push(item.value);
+                    }
                 }
-                // There was an error
-                else {
-                    $('#image-loader').fadeOut();
-                    $('#message-warning').html(msg);
-                    $('#message-warning').fadeIn();
-                }
+                formData[name] = data.join(', ');
             }
         });
-        return false;
-    });
-});
+
+        // add form-specific values into the data
+        formData.formDataNameOrder = JSON.stringify(fields);
+        formData.formGoogleSheetName = form.dataset.sheet || "responses"; // default sheet name
+        formData.formGoogleSendEmail = form.dataset.email || ""; // no email by default
+
+        return formData;
+    }
+
+    function handleFormSubmit(event) {
+        jQuery(function ($) {
+            // we are submitting via xhr below
+            event.preventDefault();
+            
+            $('form#contactForm button').prop("disabled", true);
+            $('#image-loader').fadeIn();
+            
+            var form = event.target;
+            // get the values submitted in the form
+            var data = getFormData(form);
+
+            $('#name-error').html("");
+            $('#email-error').html("");
+            $('#msg-error').html("");
+
+            var check = false;
+
+            if (data.contactName.length < 2) {
+                $('#name-error').html("Por favor, informe seu nome");
+                check = true;
+            }
+
+            if (!validEmail(data.contactEmail)) {
+                $('#email-error').html("Por favor, digite um e-mail válido");
+                check = true;
+            }
+
+            if (data.contactSubject == '') {
+                data.contactSubject = "Contact Form Submission";
+            }
+
+            if (data.contactMessage.length < 15) {
+                $('#msg-error').html("Por favor, digite sua mensagem (min. de 15 caracteres)");
+                check = true;
+            }
+
+            if (check) {
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $(".lead").offset().top
+                }, 750);
+                $('#image-loader').fadeOut();
+                $('form#contactForm button').prop("disabled", false);
+                return false;
+            }
+
+            var url = form.action;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                $('form#contactForm').fadeOut();
+                
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (xhr.status === 200 && response.result === 'success') {
+                        $('#message-success').fadeIn();
+                    }
+                }
+
+                return;
+            };
+            
+            xhr.addEventListener("error", function () {
+                $('#message-warning').fadeIn();
+            });
+            
+            // url encode form data for sending as post data
+            var encoded = Object.keys(data).map(function (k) {
+                return encodeURIComponent(k) + "=" + encodeURIComponent(data[k]);
+            }).join('&');
+            xhr.send(encoded);
+        });
+    }
+
+    function loaded() {
+        // bind to the submit event of our form
+        var forms = document.querySelectorAll("form.contactForm");
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].addEventListener("submit", handleFormSubmit, false);
+        }
+    }
+    ;
+    document.addEventListener("DOMContentLoaded", loaded, false);
+})();

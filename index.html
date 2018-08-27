@@ -35,8 +35,8 @@
         ================================================== -->
         <header id="home">
             <nav id="nav-wrap">
-                <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show navigation</a>
-                <a class="mobile-btn" href="#" title="Hide navigation">Hide navigation</a>
+                <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Mostrar menu</a>
+                <a class="mobile-btn" href="#" title="Hide navigation">Esconder menu</a>
 
                 <ul id="nav" class="nav">
                     <li class="current"><a class="smoothscroll" href="#home">Home</a></li>
@@ -56,9 +56,9 @@
                     </h3>
                     <hr />
                     <ul class="social">
-                        <li><a href="https://www.facebook.com/miguelosoares"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="https://github.com/miguelsoliv"><i class="fa fa-github-square"></i></a></li>
-                        <li><a href="https://www.linkedin.com/in/miguel-oliveira-a2966a147"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="https://www.facebook.com/miguelosoares" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://github.com/miguelsoliv" target="_blank"><i class="fa fa-github-square"></i></a></li>
+                        <li><a href="https://www.linkedin.com/in/miguel-oliveira-a2966a147" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -235,35 +235,35 @@
 
                             <p>Ferramentas e bibliotecas que estudarei para me aprimorar como profissional:</p>
                             
-                            <h3> <span>&bull;</span> <a href="https://kotlinlang.org">Kotlin</a></h3>
+                            <h3> <span>&bull;</span> <a href="https://kotlinlang.org" target="_blank">Kotlin</a></h3>
                         </div>
                     </div> <!-- item end -->
                     
                     <div class="row item">
                         <div class="twelve columns">
 
-                            <h3> <span>&bull;</span> <a href="https://www.sap.com/products/crystal-visual-studio.html">Crystal Reports</a></h3>
+                            <h3> <span>&bull;</span> <a href="https://www.sap.com/products/crystal-visual-studio.html" target="_blank">Crystal Reports</a></h3>
                         </div>
                     </div> <!-- item end -->
 
                     <div class="row item">
                         <div class="twelve columns">
 
-                            <h3> <span>&bull;</span> AndroidAnnotations (<a href="https://github.com/androidannotations/androidannotations">Github</a>)</h3>
-                        </div>
-                    </div> <!-- item end -->
-                    
-                    <div class="row item">
-                        <div class="twelve columns">
-
-                            <h3> <span>&bull;</span> EventBus (<a href="https://github.com/greenrobot/EventBus">Github</a>)</h3>
+                            <h3> <span>&bull;</span> AndroidAnnotations (<a href="https://github.com/androidannotations/androidannotations" target="_blank">Github</a>)</h3>
                         </div>
                     </div> <!-- item end -->
                     
                     <div class="row item">
                         <div class="twelve columns">
 
-                            <h3> <span>&bull;</span> <a href="https://www.postgresql.org">PostgreSQL</a></h3>
+                            <h3> <span>&bull;</span> EventBus (<a href="https://github.com/greenrobot/EventBus" target="_blank">Github</a>)</h3>
+                        </div>
+                    </div> <!-- item end -->
+                    
+                    <div class="row item">
+                        <div class="twelve columns">
+
+                            <h3> <span>&bull;</span> <a href="https://www.postgresql.org" target="_blank">PostgreSQL</a></h3>
                         </div>
                     </div> <!-- item end -->
                 </div> <!-- main-col end -->
@@ -315,7 +315,7 @@
                     </div>
 
                     <div class="link-box">
-                        <a href="https://github.com/miguelsoliv/sigopea-desktop">Detalhes</a>
+                        <a href="https://github.com/miguelsoliv/sigopea-desktop" target="_blank">Detalhes</a>
                         <a class="popup-modal-dismiss">Fechar</a>
                     </div>
 
@@ -332,7 +332,7 @@
                 <div class="row">
                     <div class="two columns header-col">
 
-                        <h1><span>Client Testimonials</span></h1>
+                        <h1><span>Citações</span></h1>
 
                     </div>
 
@@ -406,16 +406,19 @@
             <div class="row">
                 <div class="eight columns">
                     <!-- form -->
-                    <form action="" method="post" id="contactForm" name="contactForm">
+                    <form action="https://script.google.com/macros/s/AKfycbz_mfYx0JwIEQ24ZsAYIppquqcZVfhbTcQrmkjR7g/exec"
+                          method="post" id="contactForm" name="contactForm" class="contactForm">
                         <fieldset>
 
                             <div>
                                 <label for="contactName">Nome <span class="required">*</span></label>
+                                <span id="name-error" class="required"></span>
                                 <input type="text" value="" size="35" id="contactName" name="contactName">
                             </div>
 
                             <div>
                                 <label for="contactEmail">E-mail <span class="required">*</span></label>
+                                <span id="email-error" class="required"></span>
                                 <input type="text" value="" size="35" id="contactEmail" name="contactEmail">
                             </div>
 
@@ -426,6 +429,7 @@
 
                             <div>
                                 <label for="contactMessage">Mensagem <span class="required">*</span></label>
+                                <span id="msg-error" class="required"></span>
                                 <textarea style="resize:none" cols="50" rows="15" id="contactMessage" name="contactMessage"></textarea>
                             </div>
 
@@ -438,9 +442,11 @@
 
                         </fieldset>
                     </form> <!-- Form End -->
-
+                    
                     <!-- contact-warning -->
-                    <div id="message-warning"> Erro </div>
+                    <div id="message-warning">
+                        <i class="fa fa-times"></i>Erro ao enviar a mensagem. Tente novamente mais tarde<br>
+                    </div>
                     <!-- contact-success -->
                     <div id="message-success">
                         <i class="fa fa-check"></i>Sua mensagem foi enviada, obrigado!<br>
@@ -468,9 +474,9 @@
             <div class="row">
                 <div class="twelve columns">
                     <ul class="social-links">
-                        <li><a href="https://www.facebook.com/miguelosoares"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="https://github.com/miguelsoliv"><i class="fa fa-github-square"></i></a></li>
-                        <li><a href="https://www.linkedin.com/in/miguel-oliveira-a2966a147"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="https://www.facebook.com/miguelosoares" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://github.com/miguelsoliv" target="_blank"><i class="fa fa-github-square"></i></a></li>
+                        <li><a href="https://www.linkedin.com/in/miguel-oliveira-a2966a147" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                     </ul>
 
                     <ul class="copyright">
@@ -486,7 +492,7 @@
         <!-- Java Script
         ================================================== -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>');</script>
         <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
 
         <script src="js/jquery.flexslider.js"></script>
