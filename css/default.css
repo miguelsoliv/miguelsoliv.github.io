@@ -802,6 +802,18 @@ properly.
 	text-align: center !important;
 }
 
-
-
-
+p.flip
+{
+line-height: 30px;
+margin:auto;
+margin-bottom: 20px;
+font-size:16px;
+padding:5px;
+text-align:center;
+background:#555;
+border:solid 1px #666;
+color:#ffffff;
+border-radius:3px;
+user-select:none;
+cursor:pointer;
+}

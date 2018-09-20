@@ -124,10 +124,24 @@ jQuery(document).ready(function ($) {
         animationSpeed: 600,
         randomize: false
     });
+
+    /*----------------------------------------------------*/
+    /*	Event button clicked
+     ------------------------------------------------------*/
+     $("p.flip").click(function(){
+    	if($('#hiddenDiv').is(":hidden")){
+            $('#hiddenDiv').show(400);
+            $("p.flip").html('Clique para ocultar as atividades');
+        }
+        else {
+            $('#hiddenDiv').hide(400);
+            $("p.flip").html('Clique para exibir as atividades');
+        }
+    });
 });
 
     /*----------------------------------------------------*/
-    /*	contact form
+    /*	Contact form
      ------------------------------------------------------*/
 (function () {
     function validEmail(email) {
